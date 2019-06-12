@@ -3,15 +3,17 @@ $("#categories").hide();
 
 // SPA using jquery
 $("#home-nav").click(function(){
-    $("#cat-nav-parent").removeClass('active') 
-    $("#home-nav-parent").addClass('active') 
+    $("#cat-nav-parent").removeClass('active');
+    $("#home-nav-parent").addClass('active');
     $("#categories").hide();
-    $("#home").show();
+    $("#home").show("slow");
+    $('.navbar-toggler').click();
 });
 
 $("#cat-nav").click(function(){
     $("#home-nav-parent").removeClass('active') 
     $("#cat-nav-parent").addClass('active') 
     $("#home").hide();
-    $("#categories").show();
+    $("#categories").show("slow");
+    $('.navbar-toggler').click();
 });
