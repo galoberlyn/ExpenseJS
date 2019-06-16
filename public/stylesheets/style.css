@@ -10,3 +10,33 @@
     border-radius: 99em;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); 
 }
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+.success {
+  position: fixed;
+  left: 0px; 
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('/images/success.gif') 50% 50% no-repeat rgb(249,249,249);
+  background-color: #191B1D;
+}
