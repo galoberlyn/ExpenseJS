@@ -26,7 +26,7 @@
       <li id="cat-nav-parent" class="nav-item">
         <a id="cat-nav" class="nav-link" href="#">Categories</a>
       </li>
-      <li id="cat-nav-parent" class="nav-item">
+      <li id="about-nav-parent" class="nav-item">
         <a id="about-nav" class="nav-link" href="#">About This App</a>
       </li>
     </ul>
@@ -74,7 +74,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="income-adder-btn" onclick="saveIncome($('#income-value').val())" type="button" data-dismiss="modal" class="btn btn-success">Save changes</button>
+            <button id="income-adder-btn" onclick="window.saveIncome($('#income-value').val())" type="button" data-dismiss="modal" class="btn btn-success">Save changes</button>
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@
                 <div class="card bg-info">
                     <div class="card-body">
                         <h5 class="card-title text-white text-center"> Income </h5>
-                        <p class="card-text text-white text-center"> 0 </p>
+                        <p id="income-preview" class="card-text text-white text-center"> 0 </p>
                     </div>
                 </div>
             </div>
@@ -139,11 +139,11 @@
             <div class="col-md-12">
                 <div class="card bg-light">
                     <div class="card-header">
-                        <h5>Summary</h5> 
+                        <h5>Dito lahat nang recorded Summary Transactions</h5> 
                     </div>
                     <div class="card-body">
-                        <p class="card-title">Card title</p>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-title">Building in Progress..</p>
+                        <p class="card-text">....</p>
                     </div>
                 </div>
             </div>
@@ -152,9 +152,11 @@
 </div>
 
 <div id="categories">
-    <span class="floater"> 
-            <img src="/images/add.png">
-    </span>
+    <div class="floater"> 
+            <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="alert('di pa gumagana yan :(')"">
+                <i class="fas fa-plus"></i>
+            </button>
+    </div>
     <div class="container-fluid">
         <h3 class="text-center"> Expense Categories </h3>
         <hr>
@@ -205,6 +207,12 @@
     </div>
 </div>
 
+<div id = "about">
+  <h2 class="text-center"> App Created and Maintained by Galo Garlejo </h2>
+  <h3 class="text-center"><a href="galoberlyngarlejo.wixsite.com/gwaportfolio"> Personal Website </a> </h3>
+  <h4 class="text-center"> <a href="github.com/galoberlyn"> Projects </a></h4>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -213,7 +221,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/javascripts/custom-frontend.js"></script>
 <script src="/javascripts/database.js"></script>
-<script src="/javascripts/controller.js"></script>
+<script type="module" src="/javascripts/controller.js"></script>
 </script>
 </body>
 </html>
