@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="/fontawesome/css/all.css">
-    <link rel="stylesheet" href="/image-picker/image-picker.css">
 </head>
 <body style="padding-top: 70px;">
-<div id="success" class="success" style="display:none"> </div>
+<div id="success-img" class="success" style="display:none"> </div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <a class="navbar-brand" href="#">ExpenseJS</a>
@@ -24,7 +23,7 @@
         <a id="home-nav" class="nav-link" href="#">Home</a>
       </li>
       <li id="cat-nav-parent" class="nav-item">
-        <a id="cat-nav" class="nav-link" href="#">Categories</a>
+        <a id="cat-nav" class="nav-link" href="#">Categories/Budgets</a>
       </li>
       <li id="about-nav-parent" class="nav-item">
         <a id="about-nav" class="nav-link" href="#">About This App</a>
@@ -34,12 +33,6 @@
 </nav>
 
 <div id="home">
-    <div class="floater"> 
-            <button type="button" class="btn btn-primary btn-circle btn-xl" data-toggle="modal" data-target="#money">
-                <i class="fas fa-plus"></i>
-            </button>
-    </div>
-
     <!-- Modal for income/expense -->
     <div class="modal fade" id="money" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -68,14 +61,16 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="form-group">
-                <input id="income-value" type="number" class="form-control" id="income-number" placeholder="Enter Income">
+          <form onsubmit="return window.saveIncome($('#income-value').val())">
+            <div class="modal-body">
+              <div class="form-group">
+                  <input id="income-value" type="number" class="form-control" id="income-number" placeholder="Enter Income" required>
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button id="income-adder-btn" onclick="window.saveIncome($('#income-value').val())" type="button" data-dismiss="modal" class="btn btn-success">Save changes</button>
-          </div>
+            <div class="modal-footer">
+              <button id="income-adder-btn" type="submit" class="btn btn-success">Save changes</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -92,15 +87,8 @@
           </div>
           <div class="modal-body">
             <div class="container">
-                <select class="image-picker show-html form-control">
-                    <option value=""></option>
-                    <option data-img-src="/images/food.png" data-img-class="first" data-img-alt="Food" value="food"> Food </option>
-                    <option data-img-src="/images/rent.png" data-img-alt="Rent" value="rent"> Rent </option>
-                    <option data-img-src="/images/transportation.png" data-img-alt="Transpo" value="transpo"> Transpo </option>
-                    <option data-img-src="/images/internet.png" data-img-alt="Internet" value="internet"> Internet </option>
-                    <option data-img-src="/images/electricity.png" data-img-alt="Electricity" value="electricity"> Electricity </option>
-                    <option data-img-src="/images/laundry.png" data-img-alt="Laundry" value="laundry"> Laundry </option>
-                    <option data-img-src="/images/others.png" data-img-alt="Others" value="others"> Others </option>
+                <select id="category-select" class="form-control">
+                    <!-- content category select -->
                 </select>
             </div>
           </div>
@@ -139,71 +127,92 @@
             <div class="col-md-12">
                 <div class="card bg-light">
                     <div class="card-header">
-                        <h5>Dito lahat nang recorded Summary Transactions</h5> 
+                        <h5>Transactions</h5> 
                     </div>
-                    <div class="card-body">
-                        <p class="card-title">Building in Progress..</p>
-                        <p class="card-text">....</p>
+                    <div id="transaction" class="card-body">
+                      <div class="income-transactions container-fluid ">
+                        <p class="card-title text-danger">Expense <span class="font-weight-light font-italic text-muted"> Jan xx xxxx </span>
+                            <img class="float-right" src="/images/laundry.png">
+                        </p>
+                        <p class="card-text text-danger h4">123</p>
+                        <hr>
+                      </div>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div id="categories">
     <div class="floater"> 
-            <button type="button" class="btn btn-primary btn-circle btn-xl" onclick="alert('di pa gumagana yan :(')"">
+            <button type="button" class="btn btn-primary btn-circle btn-xl" data-toggle="modal" data-target="#money">
                 <i class="fas fa-plus"></i>
             </button>
     </div>
-    <div class="container-fluid">
+</div>
+
+<div id="categories" class="container">
+    <div>
         <h3 class="text-center"> Expense Categories </h3>
         <hr>
-        <div class="row justify-content-center">
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/food.png">
-                  <figcaption>Food</figcaption>
-                </figure>
-            </div>
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/Rent.png">
-                  <figcaption>Rent</figcaption>
-                </figure>
-            </div>
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/electricity.png">
-                  <figcaption>Electricity</figcaption>
-                </figure>
-            </div>
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/transportation.png">
-                  <figcaption>Transpo</figcaption>
-                </figure>
-            </div>
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/Laundry.png">
-                  <figcaption>Laundry</figcaption>
-                </figure>
-            </div>
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/internet.png">
-                  <figcaption>Internet</figcaption>
-                </figure>
-            </div>
-            <div class="col mx-auto text-center">
-                <figure class="figure">
-                  <img src="/images/Others.png">
-                  <figcaption>Others</figcaption>
-                </figure>
-            </div>
+        <h5 class="text-center"> Set Budget </h5>
+        <div id="category-tile" class="row justify-content-center">
+          <!-- content category tile -->
         </div>
+    </div>
+    <div class="floater"> 
+        <button type="button" class="btn btn-primary btn-circle btn-xl" data-toggle="modal" data-target="#category-modal">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="modal fade" id="category-modal" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="title">Add Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form onsubmit="window.addCategory($('#category-input').val())">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="category-name">Category Name</label>
+                <input id="category-input" type="text" class="form-control" placeholder="Enter custom category name" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="category-add-btn" class="btn btn-success">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="budget-modal" tabindex="-1" role="dialog" aria-labelledby="title3" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="title3">Edit budget</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form onsubmit="window.updateBudget($('#budget-id').val(), $('#budget-input').val(), $('#budget-image').val(), $('#budget-name').val()); return false">
+            <div class="modal-body">
+              <div class="form-group">
+                  <input id="budget-input" type="number" name="budget" class="form-control" placeholder="Enter Budget" required>
+                  <input name="budget-id" id="budget-id" hidden>
+                  <input name="budget-image" id="budget-image" hidden>
+                  <input name="budget-name" id="budget-name" hidden>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="income-adder-btn" type="submit" class="btn btn-success">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 </div>
 
@@ -213,15 +222,13 @@
   <h4 class="text-center"> <a href="github.com/galoberlyn"> Projects </a></h4>
 </div>
 
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="/image-picker/image-picker.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/javascripts/custom-frontend.js"></script>
 <script src="/javascripts/database.js"></script>
 <script type="module" src="/javascripts/controller.js"></script>
-</script>
+
 </body>
 </html>
