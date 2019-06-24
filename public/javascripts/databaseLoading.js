@@ -96,7 +96,7 @@ function loadIncome(data) {
 }
 
 
-function loadTransactionIncome(data) {
+function loadTransactionIncome(data) { ///////////////////////DAPAT PAG ISAHIN MO NA YUNG TRANSASCTION PARA ORDER SILA MAG LOOP SA DASHBOARD TY COME AGAIN
     data.forEach(d => {
         $("#transaction").append(`
             <div class='income-transactions container-fluid'>
@@ -113,9 +113,11 @@ function loadTransactionIncome(data) {
 function loadCategories(data) {
     let categoriesTile = "";
     let categoriesSelect = "";
+    let totalBudget = 0;
 
     let promise = new Promise(function(resolve, reject) { //promise to add value before appending
         data.forEach(d => {
+            totalBudget+=d.budget;
             categoriesTile += `
                 <button class="btn btn-light"  data-toggle="modal" data-target="#budget-modal" data-category-id="${d.id}" data-category-name="${d.category_name}"
                 data-category-image="${d.image_file}">
@@ -128,12 +130,13 @@ function loadCategories(data) {
                 </div>
               </button>`;
 
-            categoriesSelect += `<option value='${d.category_name}'> ${d.category_name} </option>`;
+            categoriesSelect += `<option value='${d.category_name},${d.image_file}'> ${d.category_name} </option>`;
         });
-        resolve(categoriesTile, categoriesSelect);
+        resolve(categoriesTile, categoriesSelect, totalBudget);
     });
 
     promise.then(function(){
+        $("#totalBudget").append(totalBudget);
         $("#category-select").append(categoriesSelect);
         $("#category-tile").append(categoriesTile);
     });

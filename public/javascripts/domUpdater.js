@@ -18,6 +18,26 @@ export var incomeUpdate = function(db) {
     }
 }
 
+export var expenseUpdate = function(db) {
+    let transaction  = db.transaction(['expense']);
+    let objectStore = transaction.objectStore('expense');
+    let request = objectStore.getAll();
+
+    request.onerror = function(event) {
+        console.log("failed to fetch expense data");
+    }
+
+    request.onsuccess = function( event) {
+        if (request.result) {
+            updateExpenseDashboard(request.result);
+            updateExpenseTransactions(request.result);
+        } else {
+            console.log('No expense record');
+        }
+    }
+}
+
+
 export var categoryUpdate = function(db, redraw=false) {
     let transaction = db.transaction(['categories']);
     let objectStore = transaction.objectStore('categories');
@@ -87,8 +107,10 @@ function updateCategoriesDOM(data) {
 function redrawCategoriesTile(data) {
     let length = data.length-1;
     let html = "";
+    let budget = 0;
 
     data.forEach(d => {
+        budget += d.budget;
         html += `<button class="btn btn-light"  data-toggle="modal" data-target="#budget-modal" data-category-id="${d.id}" data-category-name="${d.category_name}"
                         data-category-image="${d.image_file}">
                         <div class="col mx-auto text-center">
@@ -102,5 +124,24 @@ function redrawCategoriesTile(data) {
     });
 
     $("#category-tile").html(html);
+    $("#totalBudget").html(budget);
     $("#budget-input").val('');
+}
+
+function updateExpenseDashboard(data) {
+
+}
+
+function updateExpenseTransactions(data) {
+    let length = data.length - 1;
+    $("#transaction").append(`
+        <div class='ex-transactions container-fluid'>
+            <p class='card-title text-success'>Expense <span class='font-weight-light font-italic text-muted'> ${data[length].created} </span>
+                <img class="float-right" src="/images/${data[length].image_file}">
+                <i class='fas fa-money-bill-alt text-success float-right h2'></i>
+            </p>
+            <p class='card-text h4 text-success'>${data[length].expense_value}</p>
+        <hr>
+        </div>`
+    );
 }

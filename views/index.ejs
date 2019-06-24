@@ -45,7 +45,7 @@
           </div>
           <div class="modal-body">
             <button id="income-btn" data-toggle="modal" data-target="#income-input" data-dismiss="modal" class="btn btn-success btn-block"> Income </button>
-            <button id="expense-btn" data-toggle="modal" data-target="#expense-input" data-dismiss="modal" class="btn btn-danger btn-block"> Expense </button>
+            <button id="expense-btn" data-toggle="modal" data-target="#expense-modal" data-dismiss="modal" class="btn btn-danger btn-block"> Expense </button>
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@
     </div>
 
     <!-- modal for input expense -->
-    <div class="modal fade" id="expense-input" tabindex="-1" role="dialog" aria-labelledby="title3" aria-hidden="true">
+    <div class="modal fade" id="expense-modal" tabindex="-1" role="dialog" aria-labelledby="title3" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -85,16 +85,23 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="container">
-                <select id="category-select" class="form-control">
-                    <!-- content category select -->
-                </select>
+          <form onsubmit="return window.saveExpense($('#expense-input').val(), $('#category-select').val());">
+            <div class="modal-body">
+              <div class="container" id="selectContainer">
+                  <select id="category-select" class="form-control">
+                      <!-- content category select -->
+                  </select>
+                  <br>
+                  <div class="form-group expense-container">
+                        <label for="expense-input">Value</label>
+                        <input id="expense-input" type="number" class="form-control" placeholder="expense value" required>
+                  </div>
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-success">Save changes</button>
-          </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Save</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -130,14 +137,9 @@
                         <h5>Transactions</h5> 
                     </div>
                     <div id="transaction" class="card-body">
-                      <div class="income-transactions container-fluid ">
-                        <p class="card-title text-danger">Expense <span class="font-weight-light font-italic text-muted"> Jan xx xxxx </span>
-                            <img class="float-right" src="/images/laundry.png">
-                        </p>
-                        <p class="card-text text-danger h4">123</p>
-                        <hr>
+                      <div class="expense-transactions container-fluid ">
+                        <!-- expense content -->
                       </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -154,7 +156,7 @@
     <div>
         <h3 class="text-center"> Expense Categories </h3>
         <hr>
-        <h5 class="text-center"> Set Budget </h5>
+        <h5 class="text-center"> Set Budget (Total: <span id="totalBudget" class="text-success">  </span>) </h5>
         <div id="category-tile" class="row justify-content-center">
           <!-- content category tile -->
         </div>
@@ -227,7 +229,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/javascripts/custom-frontend.js"></script>
-<script src="/javascripts/database.js"></script>
+<script src="/javascripts/databaseLoading.js"></script>
 <script type="module" src="/javascripts/controller.js"></script>
 
 </body>

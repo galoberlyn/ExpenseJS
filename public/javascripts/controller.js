@@ -23,9 +23,10 @@ import { incomeUpdate, categoryUpdate } from "./domUpdater.js"
   });
 
   window.addCategory = (function addCategory(value) {
+    let validated = validate(value);
     let request = db.transaction(['categories'], 'readwrite')
     .objectStore('categories')
-    .add({category_name: value, budget: 0, image_file: 'others.png'});
+    .add({category_name: validated, budget: 0, image_file: 'others.png'});
 
     request.onsuccess = function(event) {
       console.log('Successfully added category');
@@ -48,6 +49,20 @@ import { incomeUpdate, categoryUpdate } from "./domUpdater.js"
 
   })
 
+  window.saveExpense = (function saveExpense(value, categoryNameAndImageFile) {
+    let splitted = categoryNameAndImageFile.split(",", 2);
+    let request = db.transaction(['expenses'], 'readwrite')
+    .objectStore('expenses')
+    .add({  category_name: splitted[0], image_file: splitted[1], value: value,  created: today });
+
+    request.onsuccess = function(event) {
+      console.log("Successfully added category");
+      successAnimation();
+      expenseUpdate(db);
+      return false;
+    }
+  });
+
 
   function successAnimation() {
     $('.modal').modal('hide');
@@ -57,4 +72,8 @@ import { incomeUpdate, categoryUpdate } from "./domUpdater.js"
           $("#success-img").attr('style', 'display: none');
           $('#income-value').val('');
       }, 2000);
+  }
+
+  function validate(data) {
+    return data.replace(/(<([^>]+)>)/ig,"");
   }
