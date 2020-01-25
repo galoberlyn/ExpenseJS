@@ -1,4 +1,4 @@
-import { incomeUpdate, categoryUpdate } from "./domUpdater.js"
+import { incomeUpdate, categoryUpdate, expenseUpdate } from "./domUpdater.js"
  // attach functions to window
  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'August', 'Sept', 'Oct', 'Nov', 'Dec'];
  var date = new Date();
@@ -53,7 +53,7 @@ import { incomeUpdate, categoryUpdate } from "./domUpdater.js"
     let splitted = categoryNameAndImageFile.split(",", 2);
     let request = db.transaction(['expenses'], 'readwrite')
     .objectStore('expenses')
-    .add({  category_name: splitted[0], image_file: splitted[1], value: value,  created: today });
+    .add({  category_name: splitted[0], image_file: splitted[1], expense_value: parseFloat(value),  created: today });
 
     request.onsuccess = function(event) {
       console.log("Successfully added category");

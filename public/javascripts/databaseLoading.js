@@ -9,6 +9,7 @@ request.onerror = function(event) {
 request.onsuccess = function(event) {
     db = request.result;
     loadIncomeData(db);
+    loadExpenseData(db);
     loadCategoriesData(db);
     console.log("IndexDB loaded successfully");
 }
@@ -60,10 +61,30 @@ var loadIncomeData = function(db) {
 
     request.onsuccess = function( event) {
         if (request.result) {
-            loadIncome(request.result);
-            loadTransactionIncome(request.result);
+            loadIncomeOrExpense(request.result, "income");
+            loadTransactionIncomeExpense(request.result, "income");
+
         } else {
             console.log('No data income record');
+        }
+    }
+}
+
+var loadExpenseData = function(db) {
+    let transaction = db.transaction(['expenses']);
+    let objectStore = transaction.objectStore(['expenses']);
+    let request = objectStore.getAll();
+
+    request.onerror = function(event) {
+        console.log("Failed to fetch expense data");
+    }
+
+    request.onsuccess = function(event) {
+        if(request.result) {
+            loadIncomeOrExpense(request.result, "expense");
+            loadTransactionIncomeExpense(request.result, "expense");
+        } else {
+            console.log("no data for expense record");
         }
     }
 }
@@ -87,27 +108,45 @@ var loadCategoriesData = function(db) {
 }
 
 // UTILITIES
-function loadIncome(data) {
-    let totalIncome = 0;
-    data.forEach(income =>{
-        totalIncome += parseFloat(income.income_value);
+function loadIncomeOrExpense(data, type) {
+    let total = 0;
+    data.forEach(incomeExpense =>{
+        total += parseFloat(incomeExpense.income_value);
     })
-    $("#income-preview").html(totalIncome);
+
+    if(type === 'income') {
+        $("#income-preview").html(total);
+    } else {
+         $("#expense-preview").html(total);
+    }
 }
 
 
-function loadTransactionIncome(data) { ///////////////////////DAPAT PAG ISAHIN MO NA YUNG TRANSASCTION PARA ORDER SILA MAG LOOP SA DASHBOARD TY COME AGAIN
-    data.forEach(d => {
-        $("#transaction").append(`
-            <div class='income-transactions container-fluid'>
-                <p class='card-title text-success'>Income <span class='font-weight-light font-italic text-muted'> ${d.created} </span>
-                    <i class='fas fa-money-bill-alt text-success float-right h2'></i>
-                </p>
-                <p class='card-text h4 text-success'>${d.income_value}</p>
-            <hr>
-            </div>`
-        );
-    });
+function loadTransactionIncomeExpense(data, type) {
+    if(type === 'income') {
+        data.forEach(d => {
+            let html = `<div class='income-transactions container-fluid'>
+                            <p class='card-title text-success'>Income <span class='font-weight-light font-italic text-muted'> ${d.created} </span>
+                                <i class='fas fa-money-bill-alt text-success float-right h2'></i>
+                            </p>
+                            <p class='card-text h4 text-success'>${d.income_value}</p>
+                        <hr>
+                        </div>`;
+            $("#transaction").append(html);
+        });
+    } else {
+        data.forEach(d => {
+            let html = `<div class='ex-transactions container-fluid'>
+                            <p class='card-title text-danger'>Expense <span class='font-weight-light font-italic text-muted'> ${d.created} </span>
+                                <img class="float-right" src="/images/${d.image_file}">
+                            </p>
+                            <p class='card-text h4 text-danger>${d.expense_value}</p>
+                        <hr>
+                        </div>`;
+
+            $("#transaction").append(html);
+        });
+    }
 }
 
 function loadCategories(data) {

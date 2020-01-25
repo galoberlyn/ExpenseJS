@@ -10,7 +10,7 @@ export var incomeUpdate = function(db) {
 
     request.onsuccess = function( event) {
         if (request.result) {
-            updateIncomeDashboard(request.result);
+            updateIncomeExpenseDashboard(request.result, "income");
             updateIncomeTransactions(request.result);
         } else {
             console.log('No income record');
@@ -19,8 +19,8 @@ export var incomeUpdate = function(db) {
 }
 
 export var expenseUpdate = function(db) {
-    let transaction  = db.transaction(['expense']);
-    let objectStore = transaction.objectStore('expense');
+    let transaction  = db.transaction(['expenses']);
+    let objectStore = transaction.objectStore('expenses');
     let request = objectStore.getAll();
 
     request.onerror = function(event) {
@@ -29,7 +29,7 @@ export var expenseUpdate = function(db) {
 
     request.onsuccess = function( event) {
         if (request.result) {
-            updateExpenseDashboard(request.result);
+            updateIncomeExpenseDashboard(request.result, "expense");
             updateExpenseTransactions(request.result);
         } else {
             console.log('No expense record');
@@ -61,13 +61,22 @@ export var categoryUpdate = function(db, redraw=false) {
 }
 
 
-function updateIncomeDashboard(data) {
-    let totalIncome = 0;
-    data.forEach(income => {
-        totalIncome += parseFloat(income.income_value);
-    });
-    $("#income-preview").html(totalIncome);
-    $("#income-value").val();
+function updateIncomeExpenseDashboard(data, type) {
+    let total = 0;
+
+    if(type === 'income') {
+        data.forEach(income => {
+            total += parseFloat(income.income_value);
+        });
+        $("#income-preview").html(totalIncome);
+        $("#income-value").val();
+    } else {
+        data.forEach(expense => {
+            total += parseFloat(expense.expense_value);
+        });
+        $("#expense-preview").html(total);
+        $("#expense-input").val();
+    }
 }
 
 function updateIncomeTransactions(data) {
@@ -128,19 +137,14 @@ function redrawCategoriesTile(data) {
     $("#budget-input").val('');
 }
 
-function updateExpenseDashboard(data) {
-
-}
-
 function updateExpenseTransactions(data) {
     let length = data.length - 1;
     $("#transaction").append(`
         <div class='ex-transactions container-fluid'>
-            <p class='card-title text-success'>Expense <span class='font-weight-light font-italic text-muted'> ${data[length].created} </span>
+            <p class='card-title text-danger'>Expense <span class='font-weight-light font-italic text-muted'> ${data[length].created} </span>
                 <img class="float-right" src="/images/${data[length].image_file}">
-                <i class='fas fa-money-bill-alt text-success float-right h2'></i>
             </p>
-            <p class='card-text h4 text-success'>${data[length].expense_value}</p>
+            <p class='card-text h4 text-danger>${data[length].expense_value}</p>
         <hr>
         </div>`
     );
